@@ -5,7 +5,6 @@ import Input from "../shared/Input";
 import getError from "../../lib/getError";
 
 const LoginForm = ({ error, body }) => {
-  console.log(body);
   const [data, setData] = useState({ ...body });
   const handleChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
   return (

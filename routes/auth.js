@@ -25,7 +25,8 @@ module.exports = function (app) {
       .then(({ data }) => {
         res.cookie("token", data.response.token);
         res.redirect("/");
-      });
+      })
+      .catch((err) => console.log("Server Error", err.message));
   });
   return router;
 };
