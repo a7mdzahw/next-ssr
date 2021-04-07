@@ -5,6 +5,8 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          {/* adding styles and favicon */}
+          <link rel="shortcut icon" href="/dexef.jpg" type="image/x-icon" />
           <link rel="stylesheet" href="/styles.css" />
         </Head>
         <body>

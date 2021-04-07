@@ -1,32 +1,33 @@
 const express = require("express");
-const http = require("../lib/serverHttp");
+
 const validate = require("../models/User");
 
-module.exports = function (app) {
+const check = require("../lib/check");
+const http = require("../lib/serverHttp");
+const checkValidaty = require("../lib/checkValidaty");
+
+module.exports = function (next) {
   const router = express.Router();
 
+  // handling fisrt login rendering and add dexefkey to cookies
   router.post("/LoginRequest", async (req, res) => {
-    http.post("/LoginRequest").then(({ data }) => {
-      res.send({ token: data.response });
-    });
+    const { data } = await http.post("/LoginRequest");
+    res.send({ token: data.response });
   });
 
+  // handling login form submition
   router.post("/login", async (req, res) => {
-    let { error } = validate(req.body);
-    if (error) {
-      return app.render(req, res, "/login", { error, body: req.body });
+    check(validate, "/login", req, res, next);
+    // calling api
+    try {
+      const { data } = await http.post("/Login", req.body, { headers: { dexefForgeryKey: req.cookies.dexefForgeryKey } });
+      checkValidaty(data, "/login", req, res, next);
+      res.cookie("token", data.response.token);
+      res.redirect("/");
+    } catch (err) {
+      next.render(req, res, "/login", { serverError: err.response.data || err.message });
     }
-    http
-      .post("/Login", req.body, {
-        headers: {
-          dexefForgeryKey: req.cookies.dexefForgeryKey,
-        },
-      })
-      .then(({ data }) => {
-        res.cookie("token", data.response.token);
-        res.redirect("/");
-      })
-      .catch((err) => console.log("Server Error", err.message));
   });
+
   return router;
 };

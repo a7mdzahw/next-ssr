@@ -1,5 +1,4 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
@@ -17,6 +16,7 @@ export default function Home() {
 }
 
 export async function getServerSideProps({ req }) {
+  // checking user login state and redirect if not logged in
   if (!req.cookies.token) {
     return {
       redirect: {

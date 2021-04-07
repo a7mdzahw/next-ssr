@@ -6,9 +6,8 @@ import Input from "../shared/Input";
 
 const Step3Form = ({ error, body, apiErrors }) => {
   const [data, setData] = useState({ ...body });
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
+
   return (
     <form action="/signup3" method="POST" noValidate>
       <Input

@@ -1,10 +1,9 @@
 import React from "react";
-import Image from "next/image";
 
 const JSBlank = () => {
   return (
     <div className="JavaScript-Blank">
-      <img src="/link_sent_art.png" className="link_sent_art" />
+      <img src="/link_sent_art.svg" className="link_sent_art" />
       <div className="Rectangle-685">
         <img src="/delet_trai_acc.svg" className="delet_trai_acc" />
         <h2 className="Content_signup oops">Oops !</h2>

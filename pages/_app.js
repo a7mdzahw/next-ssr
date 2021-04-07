@@ -1,9 +1,11 @@
+import ProgressBar from "nextjs-progressbar";
+
 import Navbar from "../components/shared/Navbar";
-import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <ProgressBar />
       <Navbar user={pageProps.user || null} />
       <Component {...pageProps} />
     </>

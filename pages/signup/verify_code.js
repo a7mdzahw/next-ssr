@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+
 import Signuplayout from "../../components/signup/SignupLayout";
 import Step2Form from "../../components/signup/Step2Form";
 
@@ -21,7 +22,7 @@ const Signup = ({ step, error }) => {
   );
 };
 
-export const getServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps = async ({ query }) => {
   const { data } = await http.post("/signup", { step: 2 });
   return { props: { step: query.step || data.step, error: JSON.stringify(query) } };
 };

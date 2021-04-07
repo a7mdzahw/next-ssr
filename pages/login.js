@@ -18,14 +18,17 @@ const Login = ({ error }) => {
             DE <strong className="text-warning">X</strong> EF
           </span>
         </h1>
-
-        <LoginForm error={errObj.error} body={errObj.body} />
+        <div>
+          {errObj.serverError && <p className="alert alert-danger">Server Error Try Again Later</p>}
+          <LoginForm error={errObj.error} body={errObj.body} apiErrors={errObj.apiErrors} />
+        </div>
       </div>
     </div>
   );
 };
 
 export const getServerSideProps = async ({ req, res, query }) => {
+  // checking user login state
   if (req.cookies.token) {
     return {
       redirect: {
@@ -34,11 +37,10 @@ export const getServerSideProps = async ({ req, res, query }) => {
       },
     };
   }
+  // fetching dexefkey on first render
   try {
     const { data } = await http.post("/LoginRequest");
-    const token = data.token;
-    res.cookie("dexefForgeryKey", token);
-
+    res.cookie("dexefForgeryKey", data.token);
     return {
       props: { token, error: JSON.stringify(query) || null },
     };
