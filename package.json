@@ -6,7 +6,7 @@
     "exp": "nodemon server.js",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
