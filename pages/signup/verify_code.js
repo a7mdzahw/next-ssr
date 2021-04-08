@@ -15,7 +15,7 @@ const Signup = ({ step, error }) => {
       </Head>
       <div className="container d-flex justify-content-around align-items-center" style={{ height: "75vh" }}>
         <Signuplayout step={step}>
-          <Step2Form error={errObj.error} body={errObj.body} />
+          <Step2Form error={errObj.error} body={errObj.body} apiErrors={errObj.apiErrors} />
         </Signuplayout>
       </div>
     </div>
@@ -24,6 +24,7 @@ const Signup = ({ step, error }) => {
 
 export const getServerSideProps = async ({ req, res, query }) => {
   if (!req.cookies.validatePhoneToken) return { redirect: { destination: "/signup", fallback: "blocking" } };
+  if (req.cookies.phoneValidationToken) return { redirect: { destination: "/signup/finish", fallback: "blocking" } };
 
   const response = await http.get("/PhoneVerificationCountDown");
   res.cookie("countDown", response.data.time);

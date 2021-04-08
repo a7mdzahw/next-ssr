@@ -18,6 +18,26 @@ const Step3Form = ({ error, body, apiErrors }) => {
         error={getError(error, "companyName")}
         apiError={getApiError(apiErrors, "Company Name")}
       />
+      <div className="d-flex gap-3 jsutify-content-between">
+        <Input
+          name="workField"
+          label="Work Field"
+          type="number"
+          value={data.workField}
+          onChange={handleChange}
+          error={getError(error, "workField")}
+          apiError={getApiError(apiErrors, "WorkField")}
+        />
+        <Input
+          name="companySize"
+          label="Company Size"
+          type="number"
+          value={data.companySize}
+          onChange={handleChange}
+          error={getError(error, "companySize")}
+          apiError={getApiError(apiErrors, "CompanySize")}
+        />
+      </div>
       <Input
         name="subDomain"
         label="Subdomain Suggestion"

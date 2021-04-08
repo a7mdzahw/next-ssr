@@ -17,20 +17,34 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
   return (
     <>
       <form action="/signup1" method="POST" noValidate>
-        <Input name="fullName" type="text" label="Full Name" error={getError(error, "fullName")} value={data.fullName || ""} onChange={handleChange} />
-
-        <label htmlFor="countryCode">Country</label>
-        <select name="countryCode" className="form-select form-select-lg my-3" value={data.countryCode} onChange={handleChange}>
-          <option></option>
-          {countries.map((country) => (
-            <option key={country.code} value={country.code}>
-              {country.name}
-            </option>
-          ))}
-        </select>
-        {getError(error, "countryCode") && <p className="text-danger mt-1">{getError(error, "countryCode")}</p>}
-        {apiCountryErr && <p className="text-danger mt-1">{apiCountryErr.description}</p>}
-
+        <Input
+          name="fullName"
+          type="text"
+          label="Full Name"
+          error={getError(error, "fullName")}
+          value={data.fullName || ""}
+          onChange={handleChange}
+        />
+        <div className="form-group">
+          <label htmlFor="countryCode" className="form-label">
+            Country
+          </label>
+          <select
+            name="countryCode"
+            className="form-select form-select-lg mb-3"
+            value={data.countryCode}
+            onChange={handleChange}
+          >
+            <option></option>
+            {countries.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.name}
+              </option>
+            ))}
+          </select>
+          {getError(error, "countryCode") && <p className="text-danger mt-1">{getError(error, "countryCode")}</p>}
+          {apiCountryErr && <p className="text-danger mt-1">{apiCountryErr.description}</p>}
+        </div>
         <div className=" mb-3">
           <PhoneInput
             country={(data.countryCode && data.countryCode.toLowerCase()) || "eg"}

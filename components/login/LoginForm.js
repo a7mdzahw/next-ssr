@@ -32,8 +32,15 @@ const LoginForm = ({ error, body, apiErrors }) => {
       />
 
       <div className="form-check mt-3">
-        <input type="checkbox" name="stayloggedin" id="stayloggedin" className="form-check-input" />
-        <label htmlFor="stayloggedin" className="form-check-label">
+        <input
+          type="checkbox"
+          name="stayloggedin"
+          id="stayloggedin"
+          className="form-check-input"
+          checked={data.stayloggedin}
+          onChange={(e) => setData({ ...data, stayloggedin: e.target.checked })}
+        />
+        <label htmlFor="stayloggedin" className="form-check-label fw-bold">
           Stay Logged In
         </label>
       </div>

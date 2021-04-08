@@ -3,6 +3,8 @@ const joi = require("joi");
 const validateStep3 = (step3) => {
   const schema = joi.object({
     companyName: joi.string().required().min(3),
+    workField: joi.number().required(),
+    companySize: joi.number().required(),
     subDomain: joi.string().required(),
     email: joi.string().email(),
     password: joi

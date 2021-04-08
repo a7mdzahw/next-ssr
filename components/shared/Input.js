@@ -11,7 +11,7 @@ const Input = ({ label, name, value, onChange, error, apiError, ...props }) => {
         onChange={onChange}
         {...props}
         autoFocus={error}
-        className={error ? "border border-danger form-control" : "form-control"}
+        className={error || apiError ? "border border-danger form-control" : "form-control"}
       />
       <label htmlFor={name}>{label}</label>
       {error && <p className="text-danger">{error}</p>}

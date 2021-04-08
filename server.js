@@ -19,7 +19,6 @@ app
     server.use(cookieParser());
     // static files
     server.get(/\.(png|svg)$/, express.static("./public/img"));
-
     // auth routes
     server.use("/", auth(app));
     server.use("/", signup(app));
