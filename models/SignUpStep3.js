@@ -4,7 +4,7 @@ const validateStep3 = (step3) => {
   const schema = joi.object({
     companyName: joi.string().required().min(3),
     subDomain: joi.string().required(),
-    emailAddress: joi.string().email(),
+    email: joi.string().email(),
     password: joi
       .string()
       .required()

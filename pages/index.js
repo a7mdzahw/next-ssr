@@ -18,12 +18,7 @@ export default function Home() {
 export async function getServerSideProps({ req }) {
   // checking user login state and redirect if not logged in
   if (!req.cookies.token) {
-    return {
-      redirect: {
-        destination: "/login",
-        fallback: "blocking",
-      },
-    };
+    return { redirect: { destination: "/login", fallback: "blocking" } };
   } else {
     return {
       props: { user: true },

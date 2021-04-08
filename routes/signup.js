@@ -7,6 +7,7 @@ const { isValidPhoneNumber } = require("libphonenumber-js");
 // lib modules
 const http = require("../lib/serverHttp");
 const check = require("../lib/check");
+const checkValidaty = require("../lib/checkValidaty");
 
 module.exports = function signup(next) {
   const router = express.Router();
@@ -22,6 +23,14 @@ module.exports = function signup(next) {
     res.redirect("/signup/finish");
   });
 
+  router.get("/PhoneVerificationCountDown", async (req, res) => {
+    http
+      .get("/PhoneVerificationCountDown", { params: { PhoneToken: req.cookies.validatePhoneToken } })
+      .then(({ data }) => {
+        res.send({ time: data.response });
+      });
+  });
+
   // post routes
   // first rendering of signup page
   router.post("/signup", async (req, res) => {
@@ -29,32 +38,34 @@ module.exports = function signup(next) {
   });
 
   // handling step 1 of signup process
-  router.post("/signup1", (req, res) => {
+  router.post("/signup1", async (req, res) => {
     console.log(req.body);
     const { error } = validateStep1(req.body);
     const isValid = isValidPhoneNumber(req.body.phone);
 
     if (!isValid || error) {
-      if (error) {
-        return next.render(req, res, "/signup", { error, body: req.body });
-      }
       if (!isValid) {
         return next.render(req, res, "/signup", { error, body: req.body, phoneError: true });
       }
+      return next.render(req, res, "/signup", { error, body: req.body });
     }
-
-    http.post("/PreRegisteration", req.body).then(async ({ data }) => {
-      // const errors = data.errors;
-      // if (errors.length > 0) return next.render(req, res, "/signup", { apiErrors: errors });
+    try {
+      const { data } = await http.post("/PreRegisteration", req.body);
+      // await checkValidaty(data, "/signup", req, res, next).then(() => {
+      //   res.cookie("validatePhoneToken", data.response);
+      //   res.cookie("preRegisterData", JSON.stringify(req.body));
+      //   res.redirect("/signup/verify_code");
+      // });
       res.cookie("validatePhoneToken", data.response);
       res.cookie("preRegisterData", JSON.stringify(req.body));
       res.redirect("/signup/verify_code");
-    });
+    } catch (err) {
+      console.log(err);
+    }
   });
 
   // handling step 2 of signup process
   router.post("/signup2", async (req, res) => {
-    console.log(req.body);
     await check(validateStep2, "/signup/verify_code", req, res, next);
     // http
     //   .post("/VerifyPhoneCode", {
@@ -73,23 +84,24 @@ module.exports = function signup(next) {
   });
 
   // handling step 3 of signup process
-  router.post("/signup3", (req, res) => {
-    check(validateStep3, "/signup/finish", req, res, next);
+  router.post("/signup3", async (req, res) => {
+    await check(validateStep3, "/signup/finish", req, res, next);
     const preRegisterData = JSON.parse(req.cookies.preRegisterData);
-    console.log(preRegisterData, req.body);
     http
       .post("/SignUp", {
+        companySize: 1,
+        workField: 2,
         ...req.body,
         phoneValidationToken: req.cookies.phoneValidationToken,
         ...preRegisterData,
       })
       .then(async ({ data }) => {
-        console.log("here");
-        const errors = data.errors;
-        if (errors.length > 0) return next.render(req, res, "/signup/finish", { apiErrors: errors });
+        await checkValidaty(data, "/signup/finish", req, res, next);
         res.redirect("/login");
       })
-      .catch((err) => next.render(req, res, "/signup/finish", { serverError: err.response.data || err.message }));
+      .catch((err) =>
+        next.render(req, res, "/signup/finish", { serverError: (err.response && err.response.data) || err.message })
+      );
   });
 
   return router;

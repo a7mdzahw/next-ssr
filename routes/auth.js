@@ -11,21 +11,27 @@ module.exports = function (next) {
 
   // handling fisrt login rendering and add dexefkey to cookies
   router.post("/LoginRequest", async (req, res) => {
-    const { data } = await http.post("/LoginRequest");
-    res.send({ token: data.response });
+    try {
+      const { data } = await http.post("/LoginRequest");
+      res.send({ token: data.response });
+    } catch (error) {
+      res.send({});
+    }
   });
 
   // handling login form submition
   router.post("/login", async (req, res) => {
-    check(validate, "/login", req, res, next);
+    await check(validate, "/login", req, res, next);
     // calling api
     try {
-      const { data } = await http.post("/Login", req.body, { headers: { dexefForgeryKey: req.cookies.dexefForgeryKey } });
-      checkValidaty(data, "/login", req, res, next);
+      const { data } = await http.post("/Login", req.body, {
+        headers: { dexefForgeryKey: req.cookies.dexefForgeryKey },
+      });
+      await checkValidaty(data, "/login", req, res, next);
       res.cookie("token", data.response.token);
       res.redirect("/");
     } catch (err) {
-      next.render(req, res, "/login", { serverError: err.response.data || err.message });
+      return next.render(req, res, "/login", { serverError: (err.response && err.response.data) || err.message });
     }
   });
 

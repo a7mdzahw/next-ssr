@@ -22,8 +22,14 @@ const Signup = ({ step, error }) => {
   );
 };
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps = async ({ req, res, query }) => {
+  if (!req.cookies.validatePhoneToken) return { redirect: { destination: "/signup", fallback: "blocking" } };
+
+  const response = await http.get("/PhoneVerificationCountDown");
+  res.cookie("countDown", response.data.time);
+
   const { data } = await http.post("/signup", { step: 2 });
+
   return { props: { step: query.step || data.step, error: JSON.stringify(query) } };
 };
 

@@ -12,14 +12,14 @@ const LoginForm = ({ error, body, apiErrors }) => {
   return (
     <form action="/login" method="POST" noValidate style={{ minWidth: 400, maxWidth: 600 }}>
       <Input
-        name="email"
+        name="userName"
         label="Email"
         type="email"
         placeholder="add mail"
-        error={getError(error, "email")}
-        value={data.email}
+        error={getError(error, "userName")}
+        value={data.userName}
         onChange={handleChange}
-        apiError={getApiError(apiErrors, "Email")}
+        apiError={getApiError(apiErrors, "UserName")}
       />
       <Input
         name="password"

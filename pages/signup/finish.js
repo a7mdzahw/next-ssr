@@ -23,6 +23,7 @@ const Signup = ({ step, error }) => {
 };
 
 export const getServerSideProps = async ({ req, res, query }) => {
+  if (!req.cookies.phoneValidationToken) return { redirect: { destination: "/signup/verify_code", fallback: "blocking" } };
   // setting sign up step to step 3
   const { data } = await http.post("/signup", { step: 3 });
   return { props: { step: query.step || data.step, error: JSON.stringify(query) } };

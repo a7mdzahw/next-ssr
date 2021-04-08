@@ -11,7 +11,10 @@ const Login = ({ error }) => {
       <Head>
         <title>Login</title>
       </Head>
-      <div className="container d-flex justify-content-around align-items-center" style={{ height: "75vh" }}>
+      <div
+        className="container d-flex justify-content-around align-items-center"
+        style={{ height: "75vh" }}
+      >
         <h1 className="display-6 fw-bold">
           SET UP YOUR FREE <br /> TRIAL OF{" "}
           <span className="text-primary">
@@ -19,8 +22,14 @@ const Login = ({ error }) => {
           </span>
         </h1>
         <div>
-          {errObj.serverError && <p className="alert alert-danger">Server Error Try Again Later</p>}
-          <LoginForm error={errObj.error} body={errObj.body} apiErrors={errObj.apiErrors} />
+          {errObj.serverError && (
+            <p className="alert alert-danger">Server Error Try Again Later</p>
+          )}
+          <LoginForm
+            error={errObj.error}
+            body={errObj.body}
+            apiErrors={errObj.apiErrors}
+          />
         </div>
       </div>
     </div>
