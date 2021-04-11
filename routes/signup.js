@@ -58,7 +58,7 @@ module.exports = function signup(next) {
       res.cookie("preRegisterData", JSON.stringify(req.body));
       res.redirect("/signup/verify_code");
     } catch (err) {
-      console.log(err);
+      next.render(req, res, "/signup", { serverError: "Server Error Please Try Later" });
     }
   });
 

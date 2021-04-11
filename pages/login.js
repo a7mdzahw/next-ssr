@@ -13,11 +13,9 @@ const Login = ({ error }) => {
         <title>Login</title>
       </Head>
       <div className="container d-flex justify-content-around align-items-center" style={{ height: "75vh" }}>
-        <h1 className="display-6 fw-bold">
+        <h1 className="fw-bold Title_signup">
           SET UP YOUR FREE <br /> TRIAL OF{" "}
-          <span className="text-primary">
-            DE <strong className="text-warning">X</strong> EF
-          </span>
+          <img src="/img/dexef_logo.svg" alt="logo" height="40px" style={{ paddingBottom: 10 }} />
         </h1>
         <div>
           {errObj.serverError && <p className="alert alert-danger">Server Error Try Again Later</p>}

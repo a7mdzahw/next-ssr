@@ -18,10 +18,12 @@ const Step3Form = ({ error, body, apiErrors }) => {
         error={getError(error, "companyName")}
         apiError={getApiError(apiErrors, "Company Name")}
       />
-      <div className="d-flex gap-3 jsutify-content-between">
+      <div className="d-flex gap-1 justify-content-between">
         <Input
           name="workField"
           label="Work Field"
+          className="dim-label"
+          placeholder="choose field"
           type="number"
           value={data.workField}
           onChange={handleChange}
@@ -29,6 +31,8 @@ const Step3Form = ({ error, body, apiErrors }) => {
           apiError={getApiError(apiErrors, "WorkField")}
         />
         <Input
+          className="dim-label"
+          placeholder="choose size"
           name="companySize"
           label="Company Size"
           type="number"
@@ -46,6 +50,7 @@ const Step3Form = ({ error, body, apiErrors }) => {
         error={getError(error, "subDomain")}
         apiError={getApiError(apiErrors, "SubDomain")}
       />
+      <div style={{ margin: "50px 0" }}></div>
       <Input
         name="email"
         label="Email Address"
@@ -63,6 +68,7 @@ const Step3Form = ({ error, body, apiErrors }) => {
         error={getError(error, "password")}
         apiError={getApiError(apiErrors, "Password")}
       />
+      <label className="fs-6">Use 8 or more characters with a mix of letters, numbers & symbols.</label>
       <Input
         name="confirmpassword"
         label="Confirm Password"
@@ -70,7 +76,7 @@ const Step3Form = ({ error, body, apiErrors }) => {
         onChange={handleChange}
         error={getError(error, "confirmpassword")}
       />
-      <button className="btn btn-primary d-block w-100">Let's Go</button>
+      <button className="btn Rectangle-608 log-in d-block w-100">Let's Go</button>
     </form>
   );
 };

@@ -10,7 +10,7 @@ const LoginForm = ({ error, body, apiErrors }) => {
   const handleChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
 
   return (
-    <form action="/login" method="POST" noValidate style={{ minWidth: 400, maxWidth: 600 }}>
+    <form action="/login" method="POST" noValidate style={{ minWidth: 450, maxWidth: 600 }}>
       <Input
         name="userName"
         label="Email"
@@ -45,11 +45,11 @@ const LoginForm = ({ error, body, apiErrors }) => {
         </label>
       </div>
 
-      <button className="btn btn-primary d-block w-100 my-2">Log In</button>
-      <div className="mt-2 text-center">
+      <button className="btn  d-block w-100 my-2 Rectangle-608 log-in">Log In</button>
+      <div className="mt-2 text-center signup_text">
         don't have an account yet ?{" "}
-        <Link className="text-primary fw-bold text-decoration-none" href="/signup">
-          sign up
+        <Link href="/signup">
+          <a className="text-style-1">sign up</a>
         </Link>
       </div>
     </form>

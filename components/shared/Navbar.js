@@ -3,11 +3,11 @@ import Link from "next/link";
 
 const Navbar = ({ user }) => {
   return (
-    <nav className="navbar navbar-expand">
+    <nav className="navbar navbar-expand bg">
       <div className="container">
         <Link href="/">
           <a className="navbar-brand fs-3 fw-bold">
-            DE<strong className="text-warning"> X </strong>EF
+            <img src="/img/dexef_logo.svg" alt="logo" height="20px" />
           </a>
         </Link>
         <ul className="navbar-nav">
@@ -20,12 +20,12 @@ const Navbar = ({ user }) => {
             <>
               <li className="nav-item">
                 <Link href="/login">
-                  <a className="nav-link"> Login</a>
+                  <a className="nav-link  Rectangle-609 log-in-nav me-1"> Log In</a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link href="/signup">
-                  <a className="nav-link">sign up</a>
+                  <a className="nav-link Rectangle-608 log-in">sign up</a>
                 </Link>
               </li>
             </>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 
 import Input from "../shared/Input";
 import PhoneInput from "react-phone-input-2";
@@ -31,7 +32,11 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
           </label>
           <select
             name="countryCode"
-            className="form-select form-select-lg mb-3"
+            className={
+              getError(error, "countryCode")
+                ? "form-select form-select-lg  border border-danger"
+                : "form-select form-select-lg mb-3"
+            }
             value={data.countryCode}
             onChange={handleChange}
           >
@@ -42,7 +47,7 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
               </option>
             ))}
           </select>
-          {getError(error, "countryCode") && <p className="text-danger mt-1">{getError(error, "countryCode")}</p>}
+          {getError(error, "countryCode") && <p className="text-danger">{getError(error, "countryCode")}</p>}
           {apiCountryErr && <p className="text-danger mt-1">{apiCountryErr.description}</p>}
         </div>
         <div className=" mb-3">
@@ -53,7 +58,7 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
             onChange={(phone) => setData({ ...data, phone })}
             inputProps={{
               name: "phone",
-              style: { width: "100%" },
+              style: { width: "100%", height: "2.8rem" },
               required: true,
               className: phoneError ? "form-control border border-danger" : "form-control",
             }}
@@ -61,7 +66,13 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
           {phoneError && <p className="text-danger mt-1">Wrong Phone Format</p>}
           {apiPhoneErr && <p className="text-danger mt-1">{apiPhoneErr.description}</p>}
         </div>
-        <button className="btn btn-primary d-block w-100">Submit</button>
+        <button className="btn Rectangle-608 log-in d-block w-100">Submit</button>
+        <div className="mt-2 text-center signup_text">
+          already have an account?{" "}
+          <Link href="/login">
+            <a className="text-style-1">sign in</a>
+          </Link>
+        </div>
       </form>
       {js === "true" && (
         <noscript>
