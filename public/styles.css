@@ -119,3 +119,92 @@ input:hover {
   text-align: center;
   color: var(--dimmed);
 }
+
+/* Link Sent */
+.linkSend {
+  display: flex;
+  align-items: center;
+  height: 80vh;
+}
+.linkSend .row {
+  width: 100%;
+}
+.linkSend .background img {
+  width: 100%;
+}
+.linkSend .boxLinkSent {
+  background-color: var(--background);
+  box-shadow: 0 30px 30px 0 rgba(102, 137, 163, 0.08);
+  padding: 60px 80px;
+}
+.linkSend .boxLinkSent img {
+  margin-bottom: 15px;
+}
+.linkSend .boxLinkSent .headTitle {
+  margin-bottom: 15px;
+  color: var(--dark);
+  font-size: 40px;
+  font-family: "Cairo";
+  text-transform: capitalize;
+}
+.linkSend .boxLinkSent .content {
+  margin-bottom: 15px;
+  color: #92a1b6;
+  font-size: 16px;
+}
+.linkSend .boxLinkSent .countDown {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 40px;
+  letter-spacing: 10px;
+  color: #4b4e6d;
+}
+.linkSend .boxLinkSent .btn-resend:disabled {
+  background-color: #f4f5f8;
+  color: #92a1b6;
+}
+.linkSend .boxLinkSent .hide {
+  display: none;
+}
+.linkSend .boxLinkSent .error {
+  color: #f64f64;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+/* Account Verified   */
+
+.accountVerified {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+.accountVerified .row {
+  width: 100%;
+}
+.accountVerified .background img {
+  width: 100%;
+}
+.accountVerified .boxLinkSent {
+  background-color: #ffffff;
+  box-shadow: 0 30px 30px 0 rgba(102, 137, 163, 0.08);
+  padding: 60px 80px;
+}
+.accountVerified .boxLinkSent img {
+  margin-bottom: 15px;
+}
+.accountVerified .boxLinkSent .headTitle {
+  margin-bottom: 15px;
+  color: #92a1b6;
+  font-size: 40px;
+  font-family: "Cairo";
+  text-transform: capitalize;
+}
+.accountVerified .boxLinkSent .content {
+  margin-bottom: 30px;
+  color: #92a1b6;
+  font-size: 16px;
+}
+.accountVerified .boxLinkSent .btn-resend {
+  font-size: 20px;
+}

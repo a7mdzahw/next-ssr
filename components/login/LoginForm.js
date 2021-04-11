@@ -6,7 +6,7 @@ import getError from "../../lib/getError";
 import getApiError from "../../lib/getApiError";
 
 const LoginForm = ({ error, body, apiErrors }) => {
-  const [data, setData] = useState({ ...body });
+  const [data, setData] = useState({ ...body, stayloggedin: (body && body.stayloggedin) || "" });
   const handleChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
 
   return (

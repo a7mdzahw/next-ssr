@@ -58,7 +58,7 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
             onChange={(phone) => setData({ ...data, phone })}
             inputProps={{
               name: "phone",
-              style: { width: "100%", height: "2.8rem" },
+              style: { width: "100%", height: "2.8rem", fontFamily: "Cairo" },
               required: true,
               className: phoneError ? "form-control border border-danger" : "form-control",
             }}

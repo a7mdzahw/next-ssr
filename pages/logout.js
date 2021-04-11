@@ -7,6 +7,8 @@ const Logout = () => {
 export async function getServerSideProps({ req, res }) {
   if (req.cookies.token) {
     res.clearCookie("token");
+    res.clearCookie("id");
+    res.clearCookie("email");
   }
   return {
     redirect: {

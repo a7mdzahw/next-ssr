@@ -64,7 +64,8 @@ module.exports = function signup(next) {
 
   // handling step 2 of signup process
   router.post("/signup2", async (req, res) => {
-    await check(validateStep2, "/signup/verify_code", req, res, next);
+    if (await check(validateStep2, "/signup/verify_code", req, res, next)) return;
+
     const { data } = await http.post("/VerifyPhoneCode", {
       ...req.body,
       validatePhoneToken: req.cookies.validatePhoneToken,
@@ -76,8 +77,16 @@ module.exports = function signup(next) {
 
   // handling step 3 of signup process
   router.post("/signup3", async (req, res) => {
-    await check(validateStep3, "/signup/finish", req, res, next);
+    if (await check(validateStep3, "/signup/finish", req, res, next)) return;
+
     const preRegisterData = JSON.parse(req.cookies.preRegisterData);
+    // try {
+    //   const { data } = await http.post("/CheckEmailNotExist");
+    //   checkValidaty(data, "/signup/finish", req, res, next);
+    // } catch (err) {
+    //   console.log(err.message);
+    // }
+
     http
       .post("/SignUp", {
         ...req.body,
@@ -85,12 +94,14 @@ module.exports = function signup(next) {
         ...preRegisterData,
       })
       .then(async ({ data }) => {
+        console.log(data);
         await checkValidaty(data, "/signup/finish", req, res, next);
         res.clearCookie("validatePhoneToken");
         res.clearCookie("countDown");
         res.clearCookie("phoneValidationToken");
         res.clearCookie("preRegisterData");
-        res.redirect("/login");
+        res.cookie("token", data.response);
+        res.redirect("/link-sent");
       })
       .catch((err) =>
         next.render(req, res, "/signup/finish", { serverError: (err.response && err.response.data) || err.message })
