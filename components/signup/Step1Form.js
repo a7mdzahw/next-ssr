@@ -20,6 +20,7 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
       <form action="/signup1" method="POST" noValidate>
         <Input
           name="fullName"
+          placeholder="enter your name"
           type="text"
           label="Full Name"
           error={getError(error, "fullName")}
@@ -32,6 +33,7 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
           </label>
           <select
             name="countryCode"
+            placeholder="choose country"
             className={
               getError(error, "countryCode")
                 ? "form-select form-select-lg  border border-danger"
@@ -40,7 +42,9 @@ const Step1Form = ({ error, body, apiErrors, phoneError, js }) => {
             value={data.countryCode}
             onChange={handleChange}
           >
-            <option></option>
+            <option value="" disabled selected>
+              choose country
+            </option>
             {countries.map((country) => (
               <option key={country.code} value={country.code}>
                 {country.name}

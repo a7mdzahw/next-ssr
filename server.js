@@ -1,6 +1,8 @@
 const cookieParser = require("cookie-parser");
 const express = require("express");
+const expressSession = require("express-session");
 const next = require("next");
+const router = require("./middleware/router");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -17,13 +19,20 @@ app
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
     server.use(cookieParser());
+    server.use(
+      expressSession({
+        secret: "fornow",
+        resave: false,
+        saveUninitialized: false,
+      })
+    );
     // static files
     server.get(/\.(png|svg)$/, express.static("./public/img"));
     // auth routes
     server.use("/", auth(app));
     server.use("/", signup(app));
     // next pages
-    server.get("*", (req, res) => {
+    server.get("*", router, (req, res) => {
       return handle(req, res);
     });
     // server listening

@@ -24,15 +24,6 @@ module.exports = function signup(next) {
     res.redirect("/signup/finish");
   });
 
-  // get Count Down for current User
-  router.get("/PhoneVerificationCountDown", async (req, res) => {
-    http
-      .get("/PhoneVerificationCountDown", { params: { PhoneToken: req.cookies.validatePhoneToken } })
-      .then(({ data }) => {
-        res.send({ time: data.response });
-      });
-  });
-
   // post routes
   // first rendering of signup page
   router.post("/signup", async (req, res) => {
@@ -53,9 +44,10 @@ module.exports = function signup(next) {
     }
     try {
       const { data } = await http.post("/PreRegisteration", { ...req.body, country: country.name });
-      await checkValidaty(data, "/signup", req, res, next);
+      if (await checkValidaty(data, "/signup", req, res, next)) return;
+      req.session.preRegisterData = req.body;
+      req.session.validatePhoneToken = data.response.verifyPhoneToken;
       res.cookie("validatePhoneToken", data.response.verifyPhoneToken);
-      res.cookie("preRegisterData", JSON.stringify(req.body));
       res.redirect("/signup/verify_code");
     } catch (err) {
       next.render(req, res, "/signup", { serverError: "Server Error Please Try Later" });
@@ -65,47 +57,41 @@ module.exports = function signup(next) {
   // handling step 2 of signup process
   router.post("/signup2", async (req, res) => {
     if (await check(validateStep2, "/signup/verify_code", req, res, next)) return;
-
     const { data } = await http.post("/VerifyPhoneCode", {
       ...req.body,
-      validatePhoneToken: req.cookies.validatePhoneToken,
+      validatePhoneToken: req.session.validatePhoneToken,
     });
-    await checkValidaty(data, "/signup/verify_code", req, res, next);
-    res.cookie("phoneValidationToken", data.response);
+    if (await checkValidaty(data, "/signup/verify_code", req, res, next)) return;
+    req.session.phoneValidationToken = data.response.phoneValidationToken;
     res.redirect("/signup/finish");
   });
 
   // handling step 3 of signup process
   router.post("/signup3", async (req, res) => {
     if (await check(validateStep3, "/signup/finish", req, res, next)) return;
-
-    const preRegisterData = JSON.parse(req.cookies.preRegisterData);
-    // try {
-    //   const { data } = await http.post("/CheckEmailNotExist");
-    //   checkValidaty(data, "/signup/finish", req, res, next);
-    // } catch (err) {
-    //   console.log(err.message);
-    // }
-
+    const { phoneValidationToken, preRegisterData } = req.session;
     http
       .post("/SignUp", {
         ...req.body,
-        phoneValidationToken: req.cookies.phoneValidationToken || "notValidated",
         ...preRegisterData,
+        phoneValidationToken: phoneValidationToken || "not_validated",
       })
       .then(async ({ data }) => {
-        console.log(data);
-        await checkValidaty(data, "/signup/finish", req, res, next);
-        res.clearCookie("validatePhoneToken");
+        if (await checkValidaty(data, "/signup/finish", req, res, next)) return;
         res.clearCookie("countDown");
-        res.clearCookie("phoneValidationToken");
-        res.clearCookie("preRegisterData");
         res.cookie("token", data.response);
         res.redirect("/link-sent");
       })
-      .catch((err) =>
-        next.render(req, res, "/signup/finish", { serverError: (err.response && err.response.data) || err.message })
-      );
+      .catch((err) => {
+        next.render(req, res, "/signup/finish", { serverError: (err.response && err.response.data) || err.message });
+      });
+  });
+
+  // get Count Down for current User
+  router.get("/PhoneVerificationCountDown/:PhoneToken", async (req, res) => {
+    http.get(`/PhoneVerificationCountDown?PhoneToken=${req.params.PhoneToken}`).then(({ data }) => {
+      res.send({ time: data.response });
+    });
   });
 
   return router;

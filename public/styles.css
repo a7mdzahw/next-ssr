@@ -208,3 +208,40 @@ input:hover {
 .accountVerified .boxLinkSent .btn-resend {
   font-size: 20px;
 }
+
+/* link expired */
+
+.linkexpired {
+  display: flex;
+  align-items: center;
+  height: 80vh;
+}
+.linkexpired .row {
+  width: 100%;
+}
+.linkexpired .background img {
+  width: 100%;
+}
+.linkexpired .boxLinkSent {
+  background-color: #ffffff;
+  box-shadow: 0 30px 30px 0 rgba(102, 137, 163, 0.08);
+  padding: 60px 80px;
+}
+.linkexpired .boxLinkSent img {
+  margin-bottom: 15px;
+}
+.linkexpired .boxLinkSent .headTitle {
+  margin-bottom: 15px;
+  color: #92a1b6;
+  font-size: 40px;
+  font-family: "Cairo";
+  text-transform: capitalize;
+}
+.linkexpired .boxLinkSent .content {
+  margin-bottom: 30px;
+  color: #92a1b6;
+  font-size: 16px;
+}
+.linkexpired .boxLinkSent .btn-resend {
+  font-size: 20px;
+}

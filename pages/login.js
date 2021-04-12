@@ -28,7 +28,7 @@ const Login = ({ error }) => {
 
 export const getServerSideProps = async ({ req, res, query }) => {
   // checking user login state
-  if (req.cookies.token) {
+  if (req.cookies.email) {
     return {
       redirect: {
         destination: "/",

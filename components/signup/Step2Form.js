@@ -4,8 +4,27 @@ import getApiError from "../../lib/getApiError";
 import getError from "../../lib/getError";
 
 import Input from "../shared/Input";
+import Countdown, { zeroPad } from "react-countdown";
 
-const Step2Form = ({ error, apiErrors }) => {
+const Step2Form = ({ error, apiErrors, millseconds }) => {
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return (
+        <button className="btn-timer btn-blue" disabled={false} onClick={this.skip}>
+          skip
+        </button>
+      );
+    } else {
+      // Render a countdown
+      return (
+        <>
+          <button className="btn-timer btn-blue" disabled={true}>
+            {zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}
+          </button>
+        </>
+      );
+    }
+  };
   return (
     <>
       <form action="/signup2" method="POST">
@@ -18,7 +37,9 @@ const Step2Form = ({ error, apiErrors }) => {
         />
         <div className="row align-items-center ms-1">
           <button className="btn Rectangle-608 log-in col-8">Verify</button>
-          <span className="col-4 time">00:01:30</span>
+          <div className="col-4">
+            <Countdown date={Date.now() + millseconds} renderer={renderer} />
+          </div>
         </div>
       </form>
 

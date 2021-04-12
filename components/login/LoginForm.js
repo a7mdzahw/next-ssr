@@ -24,6 +24,7 @@ const LoginForm = ({ error, body, apiErrors }) => {
       <Input
         name="password"
         label="Password"
+        placeholder="enter password"
         type="password"
         error={getError(error, "password")}
         value={data.password}

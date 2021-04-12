@@ -63,8 +63,8 @@ export async function getServerSideProps({ req, res, query }) {
   const user = jwtDecode(req.cookies.token);
   if (user.email_verified) return { redirect: { destination: "/login", fallback: "blocking" } };
   try {
-    const { data } = await http.post("/EmailVerificationCountDown");
-    return { props: { time: data.time, user: req.cookies.token } };
+    const { data } = await http.post(`/EmailVerificationCountDown/${user.sub}`);
+    return { props: { time: data.time } };
   } catch (err) {
     return { props: { time: 50 } };
   }

@@ -9,31 +9,28 @@ const checkValidaty = require("../lib/checkValidaty");
 
 module.exports = function (next) {
   const router = express.Router();
-
   // handling fisrt login rendering and add dexefkey to cookies
   router.post("/LoginRequest", async (req, res) => {
     try {
       const { data } = await http.post("/LoginRequest");
       res.send({ token: data.response });
     } catch (error) {
-      res.send({});
+      res.send({ error: error.message });
     }
   });
 
   // handling login form submittion
   router.post("/login", async (req, res) => {
     if (await check(validate, "/login", req, res, next)) return;
-
     // calling api
     try {
       const { data } = await http.post("/Login", req.body, {
         headers: { dexefForgeryKey: req.cookies.dexefForgeryKey },
       });
-      await checkValidaty(data, "/login", req, res, next);
+      if (await checkValidaty(data, "/login", req, res, next)) return;
       const user = jwt.decode(data.response.token);
-      console.log(user);
       if (req.body.stayloggedin) {
-        res.cookie("token", data.response.token, { maxAge: 60 * 60 * 24 * 30 });
+        res.cookie("token", data.response.token, { maxAge: 1000 * 60 * 60 * 24 * 30 });
       } else {
         res.cookie("token", data.response.token);
       }
@@ -49,24 +46,22 @@ module.exports = function (next) {
   });
 
   router.post("/ResendEmailVerification", async (req, res) => {
-    let email = req.cookies.email;
+    if (!req.cookies.token) return res.redirect("/login");
+    const user = jwt.decode(req.cookies.token);
+    let email = user.email;
     const token = req.cookies.token;
     console.log("email", email);
     console.log("token ", token);
-    http
-      .post("/ResendEmailVerification?Email=" + email, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(({ data }) => {
-        console.log("Link sent ", data);
-        res.redirect("/link-sent");
-      });
+    http.defaults.headers.Authorization = `Bearer ${token}`;
+    http.post(`/ResendEmailVerification?Email=${email}`).then(({ data }) => {
+      console.log("Link sent ", data);
+      res.redirect("/link-sent");
+    });
   });
 
-  router.post("/EmailVerificationCountDown", async (req, res) => {
-    let id = req.cookies.id;
+  router.post("/EmailVerificationCountDown/:id", async (req, res) => {
+    let id = req.params.id;
+    console.log(id);
     http
       .get("/EmailVerificationCountDown?UserId=" + id)
       .then(({ data }) => {
@@ -90,8 +85,5 @@ module.exports = function (next) {
 const setUserCookie = (res, user) => {
   res.cookie("id", user.sub);
   res.cookie("email", user.email);
-  res.clearCookie("validatePhoneToken");
   res.clearCookie("countDown");
-  res.clearCookie("phoneValidationToken");
-  res.clearCookie("preRegisterData");
 };

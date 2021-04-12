@@ -11,11 +11,6 @@ const Navbar = ({ user }) => {
           </a>
         </Link>
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <Link href="/">
-              <a className="nav-link">Home</a>
-            </Link>
-          </li>
           {!user && (
             <>
               <li className="nav-item">
@@ -31,11 +26,18 @@ const Navbar = ({ user }) => {
             </>
           )}
           {user && (
-            <li className="nav-item">
-              <Link href="/logout">
-                <a className="nav-link">logout</a>
-              </Link>
-            </li>
+            <>
+              <li className="nav-item">
+                <Link href="/">
+                  <a className="nav-link">Home</a>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link href="/logout">
+                  <a className="nav-link">logout</a>
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </div>

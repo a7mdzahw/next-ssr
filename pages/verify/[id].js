@@ -27,22 +27,20 @@ export async function getServerSideProps({ req, res, query, params }) {
     const { data } = await http.post("/VerifyUserEmail", { EmailToken });
     if (data.state.code === "Status-System-1013") {
       return { props: { currentPage: "AccountVerified" } };
+    } else if (data.errors[0].code === "Error-UserProfile-1033") {
+      return {
+        redirect: {
+          destination: "/login",
+        },
+      };
+    } else if (data.errors[0].code === "Error-System-1035") {
+      return {
+        props: {
+          currentPage: "LinkExpired",
+        },
+      };
     } else {
-      if (data.errors[0].code === "Error-UserProfile-1033") {
-        return {
-          redirect: {
-            destination: "/login",
-          },
-        };
-      } else if (data.errors[0].code === "Error-UserProfile-1035") {
-        return {
-          props: {
-            currentPage: "LinkExpired",
-          },
-        };
-      } else {
-        return { redirect: { destination: "/signup" } };
-      }
+      return { redirect: { destination: "/signup" } };
     }
   } catch (err) {
     return { redirect: { destination: "/signup" } };
